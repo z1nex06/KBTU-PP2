@@ -1,0 +1,5 @@
+x1 = input()
+x2 = input()
+x3 = input()
+result = x1.replace(x2, x3)
+print(result)

@@ -1,0 +1,5 @@
+#s = input()
+#reversed_s = "".join(reversed)
+#print(reversed_s)
+s = input()
+print(s[::-1])
