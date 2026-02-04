@@ -1,0 +1,15 @@
+import math
+x=int(input())
+if x < 2:
+    print("No")
+else:
+    is_prime = True
+    # Проверяем делители от 2 до корня из n
+    for i in range(2, int(math.sqrt(x)) + 1):
+        if x % i == 0:
+            is_prime = False
+            break
+    if is_prime:
+        print("Yes")
+    else:
+        print("No")
