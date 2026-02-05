@@ -1,3 +1,3 @@
 x = int(input())
-sex = (x * x)
-print(sex)
+s = (x * x)
+print(s)
