@@ -1,10 +1,10 @@
 name = {
-    "Nurlan": 21,
+    "Mansur": 21,
     "Bekslan": 40, 
     "Ainur": 18,
     "Aibek": 16,
 }
-allowed = {"Nurlan", "Ainur"}
+allowed = {"Mansur", "Ainur"}
 
 def checker(score):
     if score >= 18:
