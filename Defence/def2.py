@@ -1,12 +1,12 @@
 class Animal:
-    def init(self, name):
+    def __init__(self, name):
         self.name = name
     def sound(self):
         print("This animal makes a sound.")
 
 class Dog(Animal):
-    def init(self, name, age):
-        super().init(name)
+    def __init__(self, name, age):
+        super().__init__(name)
         self.age = age
 
     def sound(self):
@@ -16,8 +16,8 @@ class Cat(Animal):
         print(f"{self.name} says: Meow!")
 
 animal_1 = Animal("Some animal")
-dog_1 = Dog("Luna", 3)
-cat_1 = Cat("Max")
+dog_1 = Dog("Chikon", 3)
+cat_1 = Cat("Simba")
 
 animal_1.sound()
 dog_1.sound()
