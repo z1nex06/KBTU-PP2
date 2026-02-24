@@ -1,8 +1,10 @@
 from datetime import datetime, timedelta
 
 # 1. Subtract five days from current date
+```python
 current_date = datetime.now()
 print(current_date - timedelta(days=5))
+```
 
 # 2. Print yesterday, today, tomorrow
 today = datetime.now()
