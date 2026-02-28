@@ -27,3 +27,4 @@ date1 = datetime.now()
 date2 = datetime.now() - timedelta(hours=2) # example difference
 diff = date1 - date2
 print(int(diff.total_seconds()))
+print(int(diff.total_seconds()))

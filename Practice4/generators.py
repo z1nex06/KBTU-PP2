@@ -24,3 +24,4 @@ def countdown(n):
 # Testing Even numbers output
 n_val = int(input("Enter n for even numbers: "))
 print(",".join(map(str, even_numbers(n_val))))
+print(",".join(map(str, even_numbers(n_val))))
