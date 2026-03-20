@@ -1,12 +1,12 @@
 import os
 from functools import reduce
 
-# Папка с файлами
+# Folder
 folder = "student_analyzer"
 
 students = []
 
-# STEP 1: читаем файлы
+# STEP 1
 for filename in os.listdir(folder):
     if filename.endswith(".txt"):
         filepath = os.path.join(folder, filename)
@@ -16,50 +16,43 @@ for filename in os.listdir(folder):
                 name, score = line.strip().split(",")
                 students.append((name, int(score)))
 
-# STEP 2: отдельные списки
+# STEP 2
 names = [s[0] for s in students]
 scores = [s[1] for s in students]
 
-# STEP 3: анализ
-
-# 1. Количество студентов
+# STEP 3
 total_students = len(students)
-
-# 2. Сумма баллов
 total_score = sum(scores)
 
-# 3. max / min
+# max / min
 highest = max(scores)
 lowest = min(scores)
 
-# 4. Увеличение на 5
 increased_scores = list(map(lambda x: x + 5, scores))
 
-# 5. >85
+# >85
 top_students = list(filter(lambda x: x[1] > 85, students))
 
-# 6. Произведение
 product_scores = reduce(lambda x, y: x * y, scores)
 
-# 7. enumerate
+#enumerate
 print("Students with index:")
 for i, (name, score) in enumerate(students, start=1):
     print(i, name, score)
 
-# 8. zip
+#  zip
 combined = list(zip(names, scores))
 
-# 9. сортировка
 sorted_students = sorted(students, key=lambda x: x[1], reverse=True)
 
 print("\nSorted students:")
 for name, score in sorted_students:
     print(name, score)
 
-# Средний балл
+# average score
 average = total_score / total_students
 
-# STEP 4: запись в файл
+# STEP 4
 with open("report.txt", "w") as report:
     report.write(f"Total students: {total_students}\n")
     report.write(f"Average score: {average:.2f}\n")
