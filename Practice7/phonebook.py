@@ -1,68 +1,134 @@
-import psycopg2
 import csv
-from config import load_config
+from connect import get_connection
 
-def execute_query(sql, params=None, fetch=False):
-    """Универсальная функция для работы БД"""
-    config = load_config()
-    try:
-        with psycopg2.connect(**config) as conn:
-            with conn.cursor() as cur:
-                cur.execute(sql, params)
-                if fetch:
-                    return cur.fetchall()
-                conn.commit()
-    except (Exception, psycopg2.DatabaseError) as error:
-        print(f"Error: {error}")
+conn = get_connection()
+cur = conn.cursor()
 
-def create_table():
-    sql = """
-    CREATE TABLE IF NOT EXISTS phonebook (
-        contact_id SERIAL PRIMARY KEY,
-        name VARCHAR(255) NOT NULL,
-        phone VARCHAR(20) NOT NULL
+
+# ➕ Добавить контакт
+def add_contact():
+    name = input("Name: ")
+    phone = input("Phone: ")
+
+    cur.execute(
+        "INSERT INTO contacts (name, phone) VALUES (%s, %s)",
+        (name, phone)
     )
-    """
-    execute_query(sql)
-    print("Table created/verified.")
+    conn.commit()
+    print("Добавлено!\n")
 
-def insert_from_csv(filename):
-    with open(filename, mode='r') as f:
-        reader = csv.reader(f)
-        for row in reader:
-            sql = "INSERT INTO phonebook(name, phone) VALUES(%s, %s)"
-            execute_query(sql, (row[0], row[1]))
-    print(f"Data imported from {filename}")
 
-def add_contact(name, phone):
-    sql = "INSERT INTO phonebook(name, phone) VALUES(%s, %s)"
-    execute_query(sql, (name, phone))
-    print(f"Contact {name} added.")
+# 📥 Импорт из CSV
+def import_csv():
+    try:
+        with open("contacts.csv", "r") as f:
+            reader = csv.reader(f)
 
-def update_contact(name, new_phone):
-    sql = "UPDATE phonebook SET phone = %s WHERE name = %s"
-    execute_query(sql, (new_phone, name))
-    print(f"Contact {name} updated.")
+            for row in reader:
+                if len(row) < 2:
+                    continue
 
-def query_contacts(pattern):
-    sql = "SELECT * FROM phonebook WHERE name LIKE %s OR phone LIKE %s"
-    results = execute_query(sql, (f'%{pattern}%', f'%{pattern}%'), fetch=True)
-    for row in results:
-        print(row)
+                name, phone = row[0], row[1]
 
-def delete_contact(name):
-    sql = "DELETE FROM phonebook WHERE name = %s"
-    execute_query(sql, (name,))
-    print(f"Contact {name} deleted.")
+                cur.execute(
+                    "INSERT INTO contacts (name, phone) VALUES (%s, %s)",
+                    (name, phone)
+                )
 
-if __name__ == "__main__":
-    
-    create_table()
-    insert_from_csv('contacts.csv')
-    
-    # Примеры работы
-    add_contact('Meirlan', '87770001122')
-    update_contact('Ivan', '89990000000')
-    print("Search results for 'Alibi':")
-    query_contacts('Alibi')
-    delete_contact('Ivan')
+        conn.commit()
+        print("CSV импортирован!\n")
+
+    except Exception as e:
+        print("Ошибка:", e)
+
+
+# 📋 Показать все
+def show_contacts():
+    cur.execute("SELECT name, phone FROM contacts")
+    rows = cur.fetchall()
+
+    if not rows:
+        print("Пусто\n")
+    else:
+        for row in rows:
+            print(f"{row[0]} | {row[1]}")
+        print()
+
+
+# 🔍 Поиск
+def search():
+    value = input("Search: ")
+
+    cur.execute(
+        "SELECT * FROM contacts WHERE name ILIKE %s OR phone ILIKE %s",
+        ('%' + value + '%', '%' + value + '%')
+    )
+
+    rows = cur.fetchall()
+
+    if not rows:
+        print("Не найдено\n")
+    else:
+        for row in rows:
+            print(row)
+        print()
+
+
+# ✏️ Обновить
+def update():
+    name = input("Name to update: ")
+    phone = input("New phone: ")
+
+    cur.execute(
+        "UPDATE contacts SET phone=%s WHERE name=%s",
+        (phone, name)
+    )
+    conn.commit()
+    print("Обновлено!\n")
+
+
+# ❌ Удалить
+def delete():
+    value = input("Enter name or phone: ")
+
+    cur.execute(
+        "DELETE FROM contacts WHERE name=%s OR phone=%s",
+        (value, value)
+    )
+    conn.commit()
+    print("Удалено!\n")
+
+
+# 🔁 Меню
+while True:
+    print("1.Add")
+    print("2.Import CSV")
+    print("3.Show")
+    print("4.Search")
+    print("5.Update")
+    print("6.Delete")
+    print("7.Exit")
+
+    ch = input("Choose: ")
+
+    if ch == "1":
+        add_contact()
+    elif ch == "2":
+        import_csv()
+    elif ch == "3":
+        show_contacts()
+    elif ch == "4":
+        search()
+    elif ch == "5":
+        update()
+    elif ch == "6":
+        delete()
+    elif ch == "7":
+        break
+    else:
+        print("Ошибка выбора\n")
+
+
+# закрытие
+cur.close()
+conn.close()
