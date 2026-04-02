@@ -1,17 +1,14 @@
--- A procedure to insert a new user by name and phone; if the user already exists, update their phone
 CREATE OR REPLACE PROCEDURE upsert_u(p_name VARCHAR, p_phone VARCHAR)
 LANGUAGE plpgsql AS $$
 BEGIN
     INSERT INTO phonebook (username, phone)
     VALUES (p_name, p_phone)
-    ON CONFLICT (username) -- usually the primary key column
-    DO UPDATE SET
-        phone = EXCLUDED.phone;
+    ON CONFLICT (username)
+    DO UPDATE SET phone = EXCLUDED.phone;
 END;
 $$;
 
--- A procedure to insert many new users from a list of names and phones - use a loop and 
--- IF inside the procedure, validate phone correctness, and return all incorrect data
+
 CREATE OR REPLACE PROCEDURE loophz(p_user VARCHAR[], p_phone VARCHAR[])
 LANGUAGE plpgsql AS $$
 BEGIN 
@@ -27,7 +24,7 @@ BEGIN
 END;
 $$;
 
--- A procedure to delete data from the table by username or phone
+
 CREATE OR REPLACE PROCEDURE del_user(p VARCHAR)
 LANGUAGE plpgsql AS $$
 BEGIN

@@ -32,6 +32,7 @@ def ups():
     phone = input("Enter phone: ")
     sql = """CALL upsert_u(%s, %s);"""
     config = load_config()
+    print(config)
     try:
         with  psycopg2.connect(**config) as conn:
             with  conn.cursor() as cur:
