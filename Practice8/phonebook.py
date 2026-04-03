@@ -101,7 +101,7 @@ def delete_contact():
 def match_return():
     print("Write the username or phone part that you want to match.")
     a = input()
-    sql = "SELECT * FROM records(%s)"
+    sql = "SELECT * FROM public.records(%s)"
     config = load_config()
     try:
         with psycopg2.connect(**config) as conn:
