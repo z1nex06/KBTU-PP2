@@ -7,15 +7,20 @@ cur = conn.cursor()
 
 # ➕ Добавить контакт
 def add_contact():
-    name = input("Name: ")
-    phone = input("Phone: ")
+    n = int(input("How many contacts: "))
 
-    cur.execute(
-        "INSERT INTO contacts (name, phone) VALUES (%s, %s)",
-        (name, phone)
-    )
+    for i in range(n):
+        print(f"\nContact {i+1}")
+        name = input("Name: ")
+        phone = input("Phone: ")
+
+        cur.execute(
+            "INSERT INTO contacts (name, phone) VALUES (%s, %s)",
+            (name, phone)
+        )
+
     conn.commit()
-    print("Добавлено!\n")
+    print("\nВсе контакты добавлены!\n")
 
 
 # 📥 Импорт из CSV
