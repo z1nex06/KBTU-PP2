@@ -1,0 +1,14 @@
+[
+  {
+    "first_name": "Merei",
+    "surname": "Test",
+    "email": "merei@gmail.com",
+    "birthday": "1995-05-20"
+  },
+  {
+    "first_name": "Ulan",
+    "surname": "Test",
+    "email": "ulan@gmail.com",
+    "birthday": "1995-05-20"
+  }
+]
