@@ -1,5 +1,5 @@
 # config.py
 host = "localhost"
-database = "PhoneBook"
-user = "postgres"
-password = "5939"
+database = "phonebook_db" 
+user = "postgres"         
+password = "postgres123" 
